@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <report
+        id="report_courses"
+        string="Courses"
+        model="school.course"
+        report_type="qweb-pdf"
+        name="om_school.report_course"
+        file="om_school.report_course"/>
+    <report
+        id="report_students"
+        string="Students"
+        model="school.student"
+        report_type="qweb-pdf"
+        name="om_school.report_student"
+        file="om_school.report_student"/>
+</odoo>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="course_kanban_view" model="ir.ui.view">
+        <field name="name">school.course.kanban</field>
+        <field name="model">school.course</field>
+        <field name="arch" type="xml">
+            <kanban class="o_school_course_kanban" on_create="quick_create">
+                <field name="Cname"/>
+                <field name="field"/>
+                <field name="semester"/>
+                <field name="description"/>
+                <field name="bdate"/>
+                <field name="edate"/>
+                <field name="teacher_ids"/>
+                <field name="student_ids"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div>
+                                <span class="o_kanban_record_title">
+                                    <strong><t t-esc="record.Cname.value"/></strong>
+                                </span>
+                            </div>
+                            <div class="o_kanban_record_subtitle" >
+
+                                <t t-esc="record.field.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.semester.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.description.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.bdate.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.edate.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.teacher_ids.value"/>
+                            </div>
+                            <div class="o_kanban_record_subtitle">
+                                <t t-esc="record.student_ids.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="course_form_view" model="ir.ui.view">
+        <field name="name">school.course.form</field>
+        <field name="model">school.course</field>
+        <field name="arch" type="xml">
+            <form string="Students">
+                <header>
+                    <button name="action_open" type="object" string="Open" states="draft" class="oe_highlight"/>
+                    <button name="action_finished" type="object" string="Finished" states="open" class="oe_highlight"/>
+                    <button name="print_report" type="object" string="Print" states="open" class="oe_highlight"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="Cname"/>
+                        </h1>
+                    </div>
+                    <div class="or_subtitle">
+                        <h2>
+                            <field name="field"/>
+                        </h2>
+                    </div>
+                    <div>
+                        <field name="student_ids" widget="many2many" attrs="{'readonly': [('state', '=', ['finished'])]}"/>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="teacher_ids" widget="many2many_tags" attrs="{'readonly': [('state', 'not in', ['draft'])]}"/>
+                            <field name="semester"/>
+                            <field name="description"/>
+                        </group>
+                        <group>
+                            <field name="bdate"/>
+                            <field name="edate"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="documents" filename="document_name"/>
+                        <field name="document_name"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="action_course" model="ir.actions.act_window">
+        <field name="name">Courses</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">school.course</field>
+        <field name="view_mode">kanban,form</field>
+    </record>
+    <menuitem id="school_course_menu"
+              name="Courses" action="action_course"
+              parent="school_root_menu"
+              sequence="10"/>
+</odoo>
